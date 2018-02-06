@@ -3,7 +3,6 @@ require './noteTitle.jade'
 import { Notes } from '/imports/api/notes/notes.coffee'
 
 Template.noteTitle.onCreated ->
-  console.log "Render title: ",this
   @state = new ReactiveDict()
   @state.setDefault
       focused: false
@@ -108,7 +107,6 @@ Template.noteTitle.events
         if $('.textcomplete-dropdown:visible').length < 1
           if event.shiftKey
             # Edit the body
-            console.log instance
             instance.data.setShowBody true
           else if event.ctrlKey
             Template.bulletNoteItem.toggleChildren instance
@@ -276,7 +274,6 @@ Template.noteTitle.events
                 setTimeout ->
                   Template.bulletNoteItem.focus item[0]
                 , 100
-                console.log instance.data
 
                 Meteor.call 'notes.makeChild', {
                   noteId: instance.data.note._id

@@ -37,7 +37,6 @@ Template.App_settings.events
       console.log err, res
 
   'click #themes .themeSelect': (event, instance) ->
-    console.log event
     Meteor.call 'users.setTheme', {theme:event.target.dataset.name}, (err, res) ->
       Template.App_body.showSnackbar
         message: "Theme Saved"

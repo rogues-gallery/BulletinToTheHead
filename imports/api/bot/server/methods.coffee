@@ -166,8 +166,6 @@ export chat = new ValidatedMethod
       limitMultiplier = Number.parseInt limitMultiplier, 10
 
       # Check for pagination first
-      console.log limitMultiplier
-      console.log "?"
       if command[0] == "0"
         # Advance pagination
         if limitMultiplier < 10
@@ -178,7 +176,6 @@ export chat = new ValidatedMethod
           msg = 'Sorry that is all the notes I can show you. Try searching with `/find stuff` or browsing with `/browse`.\n\n'
         didPaginate = true
       else if command[0] == "-1"
-        console.log "Go back"
         # Retreat pagination
         if limitMultiplier > 1
           limitMultiplier = limitMultiplier - 1
@@ -186,8 +183,6 @@ export chat = new ValidatedMethod
         else
           msg = 'Already at the first notes!.\n\n'
         didPaginate = true
-
-      console.log command[0], didPaginate, limitMultiplier
 
       switch conversationCommand
         when 'delete'
@@ -491,8 +486,15 @@ export chat = new ValidatedMethod
               conversation.setItem 'command', 'edit'
               conversation.setItem 'noteIds', noteIds
 
-        # Extras
+        when '/journal', '/j'
+          command.shift()
+          journalEntry = command.join(' ')
 
+          noteId = Meteor.call 'notes.journal',
+            title: journalEntry
+            userId: user._id
+
+        # Extras
         when '/random'
           msg = Math.round(Math.random()*100)
 
@@ -500,6 +502,7 @@ export chat = new ValidatedMethod
           command.shift()
           msg = command.join(' ').replace /[a-zA-Z]/g, (c) ->
             String.fromCharCode if (if c <= 'Z' then 90 else 122) >= (c = c.charCodeAt(0) + 13) then c else c - 26
+
 
 
         # End Switch

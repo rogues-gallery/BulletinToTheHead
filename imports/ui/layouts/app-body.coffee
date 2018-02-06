@@ -350,7 +350,6 @@ Template.App_body.events
     $(event.currentTarget).val('')
 
   'keyup .search': (event, instance) ->
-    console.log event
     if event.keyCode == 27
       $(event.currentTarget).val('')
       $(event.currentTarget).blur()

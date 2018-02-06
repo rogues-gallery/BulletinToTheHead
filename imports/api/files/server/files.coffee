@@ -117,7 +117,6 @@ if useS3 or useDropBox
 
 Files.denyClient()
 Files.on 'afterUpload', (fileRef) ->
-  console.log "Files on after upload!!!!"
   that = this
   
   Meteor.users.update fileRef.userId,
@@ -165,7 +164,6 @@ Files.on 'afterUpload', (fileRef) ->
     writeToDB = (fileRef, version, data, triesSend = 0) ->
       # DropBox already uses random URLs
       # No need to use random file names
-      console.log "Writing db", data
       client.writeFile fileRef._id + '-' + version + '.' + fileRef.extension, data, (error, stat) ->
         bound ->
           if error
@@ -229,14 +227,12 @@ Files.on 'afterUpload', (fileRef) ->
     fileRef.name = fileRef.name + ".jpg"
 
   if /png|jpe?g/i.test(fileRef.extension or '')
-    console.log "Make thumbnails"
     createThumbnails this, fileRef, (error, fileRef) ->
       if error
         console.error error
       if useDropBox or useS3
         sendToStorage that.collection.findOne(fileRef._id)
   else
-    console.log "Do not make thumbs"
     if useDropBox or useS3
       sendToStorage fileRef
 
