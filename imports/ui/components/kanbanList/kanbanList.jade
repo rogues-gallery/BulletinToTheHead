@@ -1,6 +1,7 @@
 template(name='kanbanList')
   .kanbanList(class=className, data-id="{{_id}}")
-    header
+    header.noteContainer
+      +noteHandle
       +noteMenu
       +noteTitle(note=this)
       +noteBody(kanbanListBodyArgs this)

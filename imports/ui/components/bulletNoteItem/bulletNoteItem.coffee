@@ -11,6 +11,7 @@ require '/imports/ui/components/fileItem/fileItem.coffee'
 require '/imports/ui/components/share/share.coffee'
 require '/imports/ui/components/encrypt/encrypt.coffee'
 require '/imports/ui/components/moveTo/moveTo.coffee'
+require '/imports/ui/components/noteHandle/noteHandle.coffee'
 require '/imports/ui/components/noteMenu/noteMenu.coffee'
 require '/imports/ui/components/noteTitle/noteTitle.coffee'
 require '/imports/ui/components/noteBody/noteBody.coffee'
@@ -69,9 +70,6 @@ Template.bulletNoteItem.onRendered ->
 Template.bulletNoteItem.helpers
   currentShareKey: () ->
     FlowRouter.getParam('shareKey')
-
-  count: () ->
-    @rank / 2
 
   files: () ->
     Files.find({noteId:@_id}, {
@@ -351,26 +349,6 @@ Template.bulletNoteItem.events
     $('.mdl-tooltip').fadeOut().remove()
 
     Template.bulletNoteItem.toggleChildren(instance)
-
-  'click .dot': (event, instance) ->
-    event.preventDefault()
-    event.stopImmediatePropagation()
-    if !Session.get 'dragging'
-      offset = $(instance.firstNode).find('.title').offset()
-      $(".mdl-layout__content").animate({ scrollTop: 0 }, 500)
-      headerOffset = $('.title-wrapper').offset()
-      $('.title-wrapper').fadeOut()
-
-      $('body').append($(instance.firstNode).find('.title').first().clone().addClass('zoomingTitle'))
-      $('.zoomingTitle').offset(offset).animate({
-        left: headerOffset.left
-        top: headerOffset.top
-        color: 'white'
-        fontSize: '20px'
-      }, 100, 'swing', ->
-        $('.zoomingTitle').remove()
-        FlowRouter.go '/note/'+instance.data._id+'/'+(FlowRouter.getParam('shareKey')||'')
-      )
 
   'dragover .title, dragover .filesContainer': (event, instance) ->
     $(event.currentTarget).closest('.noteContainer').addClass 'dragging'
