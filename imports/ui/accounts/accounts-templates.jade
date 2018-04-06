@@ -6,8 +6,11 @@ template(name='Auth_page')
         +atOauth
 
 template(name='override-atPwdFormBtn')
-  button.mdl-button.mdl-button--colored.mdl-button--raised.mdl-js-button.mdl-js-ripple-effect(type='submit')
-    | {{buttonText}}
+  if loggingIn
+    .mdl-progress.mdl-js-progress.mdl-progress__indeterminate
+  else
+    button.mdl-button.mdl-button--colored.mdl-button--raised.mdl-js-button.mdl-js-ripple-effect(type='submit')
+      | {{buttonText}}
 
 template(name='override-atTextInput')
   .input(class='{{#if isValidating}}validating{{/if}} {{#if hasError}}error{{/if}} {{#if hasSuccess}}has-success{{/if}} {{#if feedback}}has-feedback{{/if}}')
